@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { QuizCard } from "@/components/quiz-card";
-import { createNoteQuiz, loadNotes, type NoteItem, type StudyLanguage } from "@/lib/notemind";
+import { createNoteQuiz, loadNotes, type NoteItem, type StudyLanguage } from "@/lib/synapzi";
 
 const demoUserId = "demo-user";
 

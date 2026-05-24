@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { ChatBox } from "@/components/chat-box";
-import { askNoteQuestion, loadNotes, type ChatMessage, type NoteItem, type StudyLanguage } from "@/lib/notemind";
+import { askNoteQuestion, loadNotes, type ChatMessage, type NoteItem, type StudyLanguage } from "@/lib/synapzi";
 
 const demoUserId = "demo-user";
 

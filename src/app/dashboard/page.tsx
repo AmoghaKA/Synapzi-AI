@@ -6,7 +6,7 @@ import { AppShell } from "@/components/app-shell";
 import { NoteCard } from "@/components/note-card";
 import { UploadCard } from "@/components/upload-card";
 import { getFirebaseServices } from "@/lib/firebase";
-import { extractNoteText, getNoteSummary, removeNote, saveNote, type NoteArtifact, type NoteItem, type StudyLanguage } from "@/lib/notemind";
+import { extractNoteText, getNoteSummary, removeNote, saveNote, type NoteArtifact, type NoteItem, type StudyLanguage } from "@/lib/synapzi";
 
 const demoUserId = "demo-user";
 const sampleNotes: NoteItem[] = [

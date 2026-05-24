@@ -40,7 +40,7 @@ const features = [
   {
     icon: Sparkles,
     title: "Upload PDFs or notes",
-    description: "Students can paste notes or upload PDFs, then let NoteMind AI extract the text and prepare it for study.",
+    description: "Students can paste notes or upload PDFs, then let Synapzi AI extract the text and prepare it for study.",
   },
   {
     icon: Layers3,
@@ -130,7 +130,7 @@ const faqs = [
   },
   {
     question: "Can I get summaries and quizzes automatically?",
-    answer: "Yes. NoteMind AI can generate summaries, key points, quizzes, revision notes, and important questions from your notes.",
+    answer: "Yes. Synapzi AI can generate summaries, key points, quizzes, revision notes, and important questions from your notes.",
   },
   {
     question: "Which languages are supported?",
@@ -144,7 +144,7 @@ const faqs = [
 
 const socialLinks = [
   { icon: Globe, href: "https://example.com", label: "Website" },
-  { icon: Mail, href: "mailto:hello@notemind.ai", label: "Email" },
+  { icon: Mail, href: "mailto:hello@synapzi.ai", label: "Email" },
   { icon: MessageSquare, href: "#product", label: "Chat" },
 ];
 
@@ -179,7 +179,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
-    window.localStorage.setItem("notemind-theme", "dark");
+    window.localStorage.setItem("synapzi-theme", "dark");
   }, []);
 
   useEffect(() => {
@@ -205,10 +205,10 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#top" className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 text-sm font-black text-slate-950 shadow-lg shadow-cyan-500/25">
-              N
+              S
             </div>
             <div>
-              <p className="text-sm font-semibold tracking-[0.3em] text-slate-900 dark:text-white">NOTE MIND</p>
+              <p className="text-sm font-semibold tracking-[0.3em] text-slate-900 dark:text-white">SYNAPZI</p>
               <p className="text-xs text-slate-500 dark:text-slate-400">Premium AI study platform</p>
             </div>
           </a>
@@ -268,7 +268,7 @@ export default function LandingPage() {
             </div>
 
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight text-balance text-slate-950 dark:text-white sm:text-6xl lg:text-7xl">
-              NoteMind AI helps students upload notes, ask questions, and learn faster with AI.
+              Synapzi AI helps students upload notes, ask questions, and learn faster with AI.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">
@@ -735,14 +735,14 @@ export default function LandingPage() {
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <GlassCard className="p-6 sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300/90">Contact</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Ready to study smarter with NoteMind AI?</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Ready to study smarter with Synapzi AI?</h2>
             <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
               Start with a clean, simple learning workflow and add your own backend later if you want to connect real authentication, storage, or classroom features.
             </p>
 
             <div className="mt-8 space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "hello@notemind.ai" },
+                { icon: Mail, label: "Email", value: "hello@synapzi.ai" },
                 { icon: Mic, label: "Phone", value: "+1 (415) 555-0138" },
                 { icon: Globe, label: "Location", value: "San Francisco, California" },
               ].map((item) => {
@@ -788,7 +788,7 @@ export default function LandingPage() {
               </label>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a href="mailto:hello@notemind.ai" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
+                <a href="mailto:hello@synapzi.ai" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
                   Send inquiry <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Response within one business day.</p>
@@ -802,9 +802,9 @@ export default function LandingPage() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_0.85fr_0.9fr] lg:px-8">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 text-sm font-black text-slate-950">N</div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 text-sm font-black text-slate-950">S</div>
               <div>
-                <p className="text-sm font-semibold tracking-[0.3em] text-slate-900 dark:text-white">NOTE MIND</p>
+                <p className="text-sm font-semibold tracking-[0.3em] text-slate-900 dark:text-white">SYNAPZI</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">AI study platform for students</p>
               </div>
             </div>
@@ -836,8 +836,8 @@ export default function LandingPage() {
 
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Contact info</p>
-            <div className="mt-5 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <p>hello@notemind.ai</p>
+              <div className="mt-5 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <p>hello@synapzi.ai</p>
               <p>+1 (415) 555-0138</p>
               <p>San Francisco, CA</p>
             </div>
@@ -848,7 +848,7 @@ export default function LandingPage() {
         </div>
 
         <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 px-4 pt-6 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} NoteMind AI. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Synapzi AI. All rights reserved.</p>
           <p className="inline-flex items-center gap-2">
             Study smarter with your own notes <ArrowRight className="h-4 w-4" />
           </p>

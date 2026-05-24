@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { BookOpenText, MessageSquareText, ScrollText, Trash2 } from "lucide-react";
-import type { NoteItem } from "@/lib/notemind";
+import type { NoteItem } from "@/lib/synapzi";
 
 export function NoteCard({
   note,

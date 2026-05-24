@@ -119,7 +119,7 @@ async function askGemini(prompt) {
 }
 
 app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "NoteMind AI API" });
+  res.json({ ok: true, service: "Synapzi AI API" });
 });
 
 app.post("/notes/extract", upload.single("file"), async (req, res) => {
@@ -147,7 +147,7 @@ app.post("/ai/summary", async (req, res) => {
     const localArtifact = buildLocalArtifact(noteText);
 
     const prompt = [
-      "You are NoteMind AI.",
+      "You are Synapzi AI.",
       `Language preference: ${language}.`,
       "Use only the uploaded notes below.",
       "Return strict JSON with keys shortSummary, bulletNotes, keyConcepts, revisionNotes, importantQuestions, and formulaSheet.",
@@ -174,7 +174,7 @@ app.post("/ai/chat", async (req, res) => {
     const language = req.body?.language || "English";
 
     const prompt = [
-      "You are NoteMind AI.",
+      "You are Synapzi AI.",
       `Language preference: ${language}.`,
       "Answer only from the uploaded notes.",
       "If the answer is not present in the notes, say that clearly.",
@@ -200,7 +200,7 @@ app.post("/ai/quiz", async (req, res) => {
     const language = req.body?.language || "English";
 
     const prompt = [
-      "You are NoteMind AI.",
+      "You are Synapzi AI.",
       `Language preference: ${language}.`,
       "Use only the uploaded notes.",
       "Generate JSON with a quiz array of MCQ, True/False, and Short answer items.",
@@ -221,5 +221,5 @@ app.post("/ai/quiz", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`NoteMind AI API listening on http://localhost:${port}`);
+  console.log(`Synapzi AI API listening on http://localhost:${port}`);
 });

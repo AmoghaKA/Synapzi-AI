@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NoteMind AI | Premium Study Platform",
+  title: "Synapzi AI | Premium Study Platform",
   description: "A premium AI study platform for teams and students to organize notes, chat with documents, and revise faster.",
 };
 

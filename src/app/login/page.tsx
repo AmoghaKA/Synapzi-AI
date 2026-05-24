@@ -20,7 +20,7 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <section className="glass-panel w-full max-w-md rounded-[2rem] p-6 sm:p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300/90">Login</p>
-        <h1 className="mt-3 text-3xl font-semibold text-slate-950 dark:text-white">Welcome back to NoteMind AI</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-slate-950 dark:text-white">Welcome back to Synapzi AI</h1>
         <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">Sign in with Google or email/password to open your student dashboard.</p>
 
         <button type="button" onClick={signInWithGoogle} className="mt-6 w-full rounded-full bg-slate-950 px-5 py-3.5 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">

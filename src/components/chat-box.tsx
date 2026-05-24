@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { NoteItem, StudyLanguage } from "@/lib/notemind";
+import type { NoteItem, StudyLanguage } from "@/lib/synapzi";
 
 export function ChatBox({
   notes,

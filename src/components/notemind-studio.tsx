@@ -99,7 +99,7 @@ async function fetchJson<T>(path: string, body: Record<string, unknown>): Promis
   return (await response.json()) as T;
 }
 
-export default function NoteMindStudio() {
+export default function SynapziStudio() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [language, setLanguage] = useState<StudyLanguage>("English");
   const [notes, setNotes] = useState<NoteRecord[]>([createSampleNote()]);
@@ -119,7 +119,7 @@ export default function NoteMindStudio() {
   const activeNote = useMemo(() => notes.find((note) => note.id === activeNoteId) ?? notes[0], [activeNoteId, notes]);
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem("notemind-theme") as "light" | "dark" | null;
+    const savedTheme = window.localStorage.getItem("synapzi-theme") as "light" | "dark" | null;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const nextTheme = savedTheme ?? (prefersDark ? "dark" : "light");
     setTheme(nextTheme);
@@ -127,7 +127,7 @@ export default function NoteMindStudio() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    window.localStorage.setItem("notemind-theme", theme);
+    window.localStorage.setItem("synapzi-theme", theme);
   }, [theme]);
 
   useEffect(() => {
@@ -256,7 +256,7 @@ export default function NoteMindStudio() {
               N
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-cyan-300">NoteMind AI</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-cyan-300">Synapzi AI</p>
               <p className="text-sm text-[var(--muted)]">Study smarter from your own notes</p>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function NoteMindStudio() {
           </span>
           <div className="space-y-4">
             <h1 className="max-w-2xl text-4xl font-black tracking-tight text-balance text-[var(--foreground)] sm:text-5xl lg:text-6xl">
-              Upload notes, ask questions, and revise faster with NoteMind AI.
+              Upload notes, ask questions, and revise faster with Synapzi AI.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
               A focused MVP for students: PDF upload, summaries, note chat, quiz generation, revision sheets, and multilingual answers from a clean dashboard.
@@ -607,7 +607,7 @@ export default function NoteMindStudio() {
       </section>
 
       <footer className="mt-8 flex flex-col gap-3 rounded-[2rem] border border-white/20 bg-[var(--surface)] px-6 py-5 text-sm text-[var(--muted)] shadow-[0_20px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
-        <p>NoteMind AI is a simple MVP for note-based studying, quizzes, and revision.</p>
+        <p>Synapzi AI is a simple MVP for note-based studying, quizzes, and revision.</p>
         <p>Built with Next.js, React, Tailwind CSS, Express, Gemini, Firebase, and pdf-parse.</p>
       </footer>
     </main>

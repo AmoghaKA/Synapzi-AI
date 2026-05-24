@@ -30,14 +30,14 @@ export function AppShell({
       return "light";
     }
 
-    const savedTheme = window.localStorage.getItem("notemind-theme") as "light" | "dark" | null;
+    const savedTheme = window.localStorage.getItem("synapzi-theme") as "light" | "dark" | null;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     return savedTheme ?? (prefersDark ? "dark" : "light");
   });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    window.localStorage.setItem("notemind-theme", theme);
+    window.localStorage.setItem("synapzi-theme", theme);
   }, [theme]);
 
   async function handleLogout() {
@@ -50,9 +50,9 @@ export function AppShell({
         <aside className={`glass-panel fixed inset-y-3 left-3 z-40 w-72 rounded-[1.75rem] p-4 transition-transform lg:static lg:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-[110%] lg:translate-x-0"}`}>
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 font-black text-slate-950">N</div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 font-black text-slate-950">S</div>
               <div>
-                <p className="font-semibold">NoteMind AI</p>
+                <p className="font-semibold">Synapzi AI</p>
                 <p className="text-xs text-[var(--muted)]">Student dashboard</p>
               </div>
             </div>

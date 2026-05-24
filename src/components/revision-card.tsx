@@ -1,6 +1,6 @@
 "use client";
 
-import type { NoteItem } from "@/lib/notemind";
+import type { NoteItem } from "@/lib/synapzi";
 
 export function RevisionCard({
   notes,
