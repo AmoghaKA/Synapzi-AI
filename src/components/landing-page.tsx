@@ -25,8 +25,9 @@ import {
 } from "lucide-react";
 
 const navLinks = [
+  { label: "Overview", href: "#top" },
   { label: "Features", href: "#features" },
-  { label: "Product", href: "#product" },
+  { label: "Chat With Notes", href: "#product" },
   { label: "About", href: "#about" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
@@ -38,60 +39,60 @@ const trustedCompanies = ["Vercel", "Stripe", "Linear", "Notion", "Airtable", "I
 const features = [
   {
     icon: Sparkles,
-    title: "AI notes that feel curated",
-    description: "Summaries, action items, and key takeaways presented like a premium internal product, not a generic chatbot.",
+    title: "Upload PDFs or notes",
+    description: "Students can paste notes or upload PDFs, then let NoteMind AI extract the text and prepare it for study.",
   },
   {
     icon: Layers3,
-    title: "Structured workflows",
-    description: "Organize knowledge into notes, tasks, and revisions with a clear layout that scales for real teams.",
+    title: "Generate study materials",
+    description: "Create summaries, key points, quizzes, revision notes, and important questions automatically from the same note.",
   },
   {
     icon: Shield,
-    title: "Trusted by design",
-    description: "Built with a calm, enterprise-friendly visual language, smooth interactions, and transparent states.",
+    title: "Chat only from your notes",
+    description: "Ask chapter questions, formula questions, or simple explanations and the AI answers only from the uploaded material.",
   },
   {
     icon: Zap,
-    title: "Fast by default",
-    description: "Everything is optimized for quick scanning, crisp motion, and mobile-first responsiveness.",
+    title: "Study in multiple languages",
+    description: "Use the platform in English, Hindi, or Kannada to make learning easier and more accessible.",
   },
   {
     icon: BookOpen,
-    title: "Learning-focused dashboard",
-    description: "Track learning progress, key concepts, quizzes, and confidence levels in one elegant workspace.",
+    title: "Simple student dashboard",
+    description: "See uploaded notes, summary cards, quiz tools, and revision helpers in one clean workspace.",
   },
   {
     icon: MessageSquare,
-    title: "Context-aware chat",
-    description: "Ask questions and get answers grounded in your content, with a clean response history and citations-ready structure.",
+    title: "Revision notes and important questions",
+    description: "Automatically generate revision notes, formula sheets, and important questions for quick exam preparation.",
   },
 ];
 
 const companyStats = [
-  { value: "12k+", label: "Teams onboarded" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "4.9/5", label: "Customer rating" },
-  { value: "180ms", label: "Average response" },
+  { value: "PDFs", label: "Uploaded and extracted" },
+  { value: "AI", label: "Summaries and quizzes" },
+  { value: "Chat", label: "Only from notes" },
+  { value: "3", label: "Supported languages" },
 ];
 
 const testimonials = [
   {
     name: "Ava Thompson",
-    role: "Product Design Lead, Northstar",
-    quote: "The UI feels like a funded startup shipped it yesterday. It is polished, fast, and immediately credible.",
+    role: "Class 10 Student",
+    quote: "I can upload my chapter notes and quickly get summaries, important questions, and a quiz without jumping between apps.",
     initials: "AT",
   },
   {
     name: "Daniel Kim",
-    role: "Operations Director, Helio",
-    quote: "The dashboard preview, pricing, and motion system make the product feel premium without becoming noisy.",
+    role: "Engineering Student",
+    quote: "The chat with notes feature is the best part. It answers only from my uploaded material, so revision stays focused.",
     initials: "DK",
   },
   {
     name: "Mia Patel",
-    role: "Founder, Atlas Studio",
-    quote: "We used this layout as the foundation for our launch page and it looked investor-ready on day one.",
+    role: "Bilingual Learner",
+    quote: "Being able to study in Hindi and Kannada makes the platform much easier to use for everyday learning.",
     initials: "MP",
   },
 ];
@@ -100,57 +101,57 @@ const pricingPlans = [
   {
     name: "Starter",
     price: "$19",
-    description: "For solo founders and early experiments.",
-    features: ["1 workspace", "AI summaries", "Basic analytics", "Email support"],
+    description: "For students who want a simple way to upload notes and study smarter.",
+    features: ["Upload PDFs", "Generate summaries", "Key points and questions", "Chat with notes"],
   },
   {
     name: "Growth",
     price: "$49",
-    description: "For teams shipping a serious product.",
+    description: "For students who rely on quizzes, revision notes, and multilingual support.",
     recommended: true,
-    features: ["Unlimited workspaces", "Advanced automations", "Priority support", "Custom branding"],
+    features: ["Unlimited notes", "Hindi and Kannada support", "Auto quizzes", "Revision tools"],
   },
   {
     name: "Scale",
     price: "Custom",
-    description: "For larger teams with security and service needs.",
-    features: ["SSO and roles", "Dedicated onboarding", "SLA support", "Security reviews"],
+    description: "For schools or institutions that want to roll it out to many students.",
+    features: ["Team rollout", "Central note library", "Study analytics", "Custom onboarding"],
   },
 ];
 
 const faqs = [
   {
-    question: "Can I customize the branding and layout?",
-    answer: "Yes. The structure is modular, so colors, spacing, copy, and sections can be adapted without changing the visual system.",
+    question: "Can I upload both PDFs and typed notes?",
+    answer: "Yes. Students can upload PDFs or paste notes directly, and the platform extracts the text for study tools.",
   },
   {
-    question: "Is dark mode supported?",
-    answer: "Yes. The page respects system preferences and includes an in-page toggle for a polished light or dark experience.",
+    question: "How does chat with notes work?",
+    answer: "You ask a question, the note text is sent to the AI, and the answer is generated only from the uploaded material.",
   },
   {
-    question: "Does the design work on mobile?",
-    answer: "Absolutely. Each section is built responsively with stacked layouts, touch-friendly controls, and accessible spacing.",
+    question: "Can I get summaries and quizzes automatically?",
+    answer: "Yes. NoteMind AI can generate summaries, key points, quizzes, revision notes, and important questions from your notes.",
   },
   {
-    question: "Can this be connected to a real backend?",
-    answer: "The contact form and product areas are ready to be wired into APIs, forms, or auth flows when you add them.",
+    question: "Which languages are supported?",
+    answer: "The platform supports English, Hindi, and Kannada to make studying more accessible for more students.",
   },
   {
-    question: "Is the animation heavy?",
-    answer: "The motion is intentionally subtle. It adds polish without hurting clarity, performance, or readability.",
+    question: "What is the main goal of the platform?",
+    answer: "To help students study smarter with AI using their own uploaded notes, with a simple and beginner-friendly workflow.",
   },
 ];
 
 const socialLinks = [
   { icon: Globe, href: "https://example.com", label: "Website" },
   { icon: Mail, href: "mailto:hello@notemind.ai", label: "Email" },
-  { icon: MessageSquare, href: "#contact", label: "Updates" },
+  { icon: MessageSquare, href: "#product", label: "Chat" },
 ];
 
 const dashboardCards = [
-  { title: "Active workspace", value: "NoteMind AI", detail: "+18% this week", accent: "from-cyan-400/30 to-sky-500/15" },
-  { title: "Tasks completed", value: "84", detail: "7 remaining", accent: "from-emerald-400/30 to-teal-500/15" },
-  { title: "Reading pace", value: "1.8x", detail: "Average speed", accent: "from-indigo-400/30 to-violet-500/15" },
+  { title: "Uploaded notes", value: "12", detail: "PDFs and typed notes", accent: "from-cyan-400/30 to-sky-500/15" },
+  { title: "AI summaries", value: "5", detail: "Key points and revision", accent: "from-emerald-400/30 to-teal-500/15" },
+  { title: "Quiz types", value: "3", detail: "MCQ, T/F, short answer", accent: "from-indigo-400/30 to-violet-500/15" },
 ];
 
 const chartBars = [52, 74, 58, 86, 64, 92, 78];
@@ -263,15 +264,15 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative z-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100 shadow-[0_10px_40px_rgba(34,211,238,0.12)]">
               <Sparkles className="h-4 w-4" />
-              Premium SaaS landing page
+              Study smarter with AI
             </div>
 
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tight text-balance text-slate-950 dark:text-white sm:text-6xl lg:text-7xl">
-              Build a polished product story that feels like Stripe, Linear, and Framer combined.
+              NoteMind AI helps students upload notes, ask questions, and learn faster with AI.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">
-              NoteMind AI presents your product with a premium visual system, fluid motion, glassmorphism panels, and a fully responsive layout designed to convert visitors into users.
+              Upload PDFs or typed notes, extract the text instantly, and generate summaries, key points, quizzes, revision notes, and important questions from one simple dashboard.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -279,7 +280,7 @@ export default function LandingPage() {
                 Get Started <ArrowRight className="ml-2 h-4 w-4" />
               </a>
               <a href="#features" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/70 px-6 py-3.5 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 dark:bg-white/5 dark:text-white">
-                Learn More <Play className="ml-2 h-4 w-4" />
+                See Features <Play className="ml-2 h-4 w-4" />
               </a>
             </div>
 
@@ -307,8 +308,8 @@ export default function LandingPage() {
               <div className="relative rounded-[1.35rem] border border-white/10 bg-slate-950 p-5 text-white shadow-2xl shadow-slate-950/25 dark:bg-slate-900">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.3em] text-cyan-300/90">Live product overview</p>
-                    <h2 className="mt-2 text-2xl font-semibold">Everything your visitors need in one glance</h2>
+                    <p className="text-xs uppercase tracking-[0.3em] text-cyan-300/90">Live study dashboard</p>
+                    <h2 className="mt-2 text-2xl font-semibold">Everything students need in one glance</h2>
                   </div>
                   <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">Updated now</div>
                 </div>
@@ -317,8 +318,8 @@ export default function LandingPage() {
                   <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-300">Revenue trend</p>
-                        <p className="mt-1 text-2xl font-semibold">$24.8k</p>
+                        <p className="text-sm text-slate-300">Study streak</p>
+                        <p className="mt-1 text-2xl font-semibold">24 notes</p>
                       </div>
                       <BarChart3 className="h-5 w-5 text-cyan-300" />
                     </div>
@@ -350,12 +351,12 @@ export default function LandingPage() {
 
                 <div className="mt-4 grid gap-4 sm:grid-cols-[0.95fr_1.05fr]">
                   <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
-                    <p className="text-sm text-slate-300">Today&apos;s focus</p>
+                    <p className="text-sm text-slate-300">Today&apos;s study plan</p>
                     <div className="mt-3 space-y-3">
                       {[
-                        ["Launch page", "Ready", "bg-emerald-400"],
-                        ["Product demo", "In review", "bg-cyan-400"],
-                        ["Social proof", "Approved", "bg-sky-400"],
+                        ["Upload chapter PDF", "Ready", "bg-emerald-400"],
+                        ["Generate quiz", "In review", "bg-cyan-400"],
+                        ["Revise key points", "Approved", "bg-sky-400"],
                       ].map(([label, status, tone]) => (
                         <div key={label} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 px-3 py-2">
                           <div className="flex items-center gap-3">
@@ -371,16 +372,16 @@ export default function LandingPage() {
                   <div className="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-300">Engagement summary</p>
-                        <p className="mt-1 text-lg font-semibold">High-intent visitors are converting</p>
+                        <p className="text-sm text-slate-300">Revision summary</p>
+                        <p className="mt-1 text-lg font-semibold">Students are revising faster with AI</p>
                       </div>
                       <Users className="h-5 w-5 text-emerald-300" />
                     </div>
                     <div className="mt-4 grid grid-cols-3 gap-3 text-center">
                       {[
-                        ["72%", "Scroll depth"],
-                        ["41%", "CTA clicks"],
-                        ["19%", "Demo requests"],
+                        ["72%", "Summary use"],
+                        ["41%", "Quiz attempts"],
+                        ["19%", "Chat questions"],
                       ].map(([value, label]) => (
                         <div key={label} className="rounded-2xl bg-white/5 px-3 py-4">
                           <p className="text-xl font-semibold text-white">{value}</p>
@@ -399,6 +400,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <GlassCard className="p-6 sm:p-8">
           <p className="text-center text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Trusted by companies</p>
+          <p className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">Built for students, tutors, and anyone who wants a simple AI study workflow.</p>
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {trustedCompanies.map((company) => (
               <div key={company} className="flex items-center justify-center rounded-2xl border border-white/10 bg-white/50 px-4 py-4 text-sm font-semibold text-slate-600 transition hover:-translate-y-0.5 dark:bg-white/5 dark:text-slate-200">
@@ -412,8 +414,8 @@ export default function LandingPage() {
       <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Features"
-          title="Designed to look expensive, work beautifully, and feel effortless."
-          description="Every block is intentionally composed with premium spacing, motion, and hierarchy so your product page feels like a real startup launch."
+          title="Everything students need to study smarter in one place."
+          description="From note upload to AI-generated summaries, quiz creation, revision notes, and language support, the platform keeps learning simple."
         />
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -452,15 +454,15 @@ export default function LandingPage() {
           >
             <SectionHeading
               eyebrow="Dashboard"
-              title="A product preview that communicates value before the first click."
-              description="Use this section to visually explain your platform, show depth, and make the website feel like an actual product launch."
+              title="Chat with notes is the core experience."
+              description="Students can open a note, ask a question, and get answers based only on the uploaded study material."
             />
 
             <div className="mt-8 space-y-4">
               {[
-                "Realtime analytics and clear progress states",
-                "Elegant content cards for product storytelling",
-                "Focused CTA placement that drives conversions",
+                "Upload PDFs or paste notes in seconds",
+                "Ask questions and get answers only from notes",
+                "Generate summaries, quizzes, and revision tools quickly",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/70 p-4 text-sm text-slate-700 dark:bg-white/5 dark:text-slate-200">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
@@ -480,8 +482,8 @@ export default function LandingPage() {
             <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950 p-5 text-white dark:bg-slate-900">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Product preview</p>
-                  <h3 className="mt-1 text-xl font-semibold">Analytics cockpit</h3>
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Study preview</p>
+                  <h3 className="mt-1 text-xl font-semibold">Notes, chat, and revision in one dashboard</h3>
                 </div>
                 <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">
                   <Globe className="h-3.5 w-3.5" />
@@ -502,7 +504,7 @@ export default function LandingPage() {
               <div className="mt-4 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
                 <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-slate-200">Weekly engagement</p>
+                    <p className="text-sm font-medium text-slate-200">Study progress</p>
                     <BarChart3 className="h-4 w-4 text-cyan-300" />
                   </div>
                   <div className="mt-5 flex h-52 items-end gap-2">
@@ -588,13 +590,13 @@ export default function LandingPage() {
                 <div className="relative flex h-full flex-col justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/80">Why it works</p>
-                    <h3 className="mt-3 max-w-md text-2xl font-semibold">A landing page should feel like the product, not just a brochure.</h3>
+                    <h3 className="mt-3 max-w-md text-2xl font-semibold">Students get one place to upload, study, revise, and ask questions.</h3>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-3">
                     {[
-                      "Professional typography",
-                      "Gradient-rich composition",
-                      "Smooth conversion flow",
+                      "Upload PDFs or notes",
+                      "Chat with notes",
+                      "Summaries and quizzes",
                     ].map((item) => (
                       <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
                         {item}
@@ -611,8 +613,8 @@ export default function LandingPage() {
       <section id="testimonials" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Testimonials"
-          title="Social proof that looks as credible as the rest of the page."
-          description="Use these cards to show what real users say about the product and to reinforce trust at the right moment."
+          title="Students can see the value immediately."
+          description="These testimonials reflect the core experience: simple uploads, focused answers, and study tools that save time."
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
@@ -648,8 +650,8 @@ export default function LandingPage() {
       <section id="pricing" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Pricing"
-          title="Three plans with a clear recommended choice."
-          description="A strong pricing section should make the decision obvious. Keep the visual emphasis on the middle tier while still giving every option a clean presentation."
+          title="Simple plans for individuals and classrooms."
+          description="Keep pricing easy to understand, with a recommended plan for most students and a custom option for larger rollouts."
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
@@ -693,8 +695,8 @@ export default function LandingPage() {
       <section id="faq" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="FAQ"
-          title="A clean FAQ makes the page feel complete and ready for launch."
-          description="These questions cover the essentials visitors usually want before they convert, and the accordion keeps the section compact and polished."
+          title="Quick answers for students and teachers."
+          description="These questions explain how uploads, chat with notes, summaries, quizzes, and multilingual support work."
         />
 
         <div className="mx-auto mt-14 max-w-3xl space-y-4">
@@ -733,9 +735,9 @@ export default function LandingPage() {
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <GlassCard className="p-6 sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300/90">Contact</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Everything you expect from a real SaaS website is here.</h2>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Ready to study smarter with NoteMind AI?</h2>
             <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              Add your own backend later, but keep this polished surface in place so the page already feels complete, legitimate, and conversion-ready.
+              Start with a clean, simple learning workflow and add your own backend later if you want to connect real authentication, storage, or classroom features.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -803,11 +805,11 @@ export default function LandingPage() {
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 text-sm font-black text-slate-950">N</div>
               <div>
                 <p className="text-sm font-semibold tracking-[0.3em] text-slate-900 dark:text-white">NOTE MIND</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Premium product UI kit</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">AI study platform for students</p>
               </div>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600 dark:text-slate-300">
-              A clean, modular marketing experience built to make a startup look credible, premium, and ready to ship.
+              Upload PDFs or notes, extract the text, chat with your study material, and generate the tools you need to revise faster.
             </p>
             <div className="mt-6 flex items-center gap-3">
               {socialLinks.map((item) => {
@@ -840,7 +842,7 @@ export default function LandingPage() {
               <p>San Francisco, CA</p>
             </div>
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/70 p-4 text-xs leading-6 text-slate-500 dark:bg-white/5 dark:text-slate-400">
-              Smooth gradients, premium spacing, subtle glassmorphism, and motion carefully tuned for a polished SaaS launch experience.
+              Built for a simple student workflow with dark mode, soft motion, and clear study-focused sections.
             </div>
           </div>
         </div>
@@ -848,7 +850,7 @@ export default function LandingPage() {
         <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-4 border-t border-white/10 px-4 pt-6 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} NoteMind AI. All rights reserved.</p>
           <p className="inline-flex items-center gap-2">
-            Crafted for a premium first impression <ArrowRight className="h-4 w-4" />
+            Study smarter with your own notes <ArrowRight className="h-4 w-4" />
           </p>
         </div>
       </footer>
