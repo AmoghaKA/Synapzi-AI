@@ -16,7 +16,7 @@ const sampleNotes: NoteItem[] = [
     text: "Force, motion, and energy are key ideas in this chapter. Use the dashboard to upload a PDF and generate quizzes.",
     source: "Sample content",
     userId: demoUserId,
-    createdAt: new Date().toLocaleString(),
+    createdAt: "Just now",
   },
 ];
 
@@ -31,7 +31,51 @@ export default function DashboardPage() {
   });
   const [summary, setSummary] = useState<NoteArtifact | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
   const [language] = useState<StudyLanguage>("English");
+
+  function buildFallbackArtifact(noteText: string): NoteArtifact {
+    const cleaned = noteText.replace(/\s+/g, " ").trim();
+    const sentences = cleaned.match(/[^.!?]+[.!?]?/g)?.map((item) => item.trim()).filter(Boolean) ?? [];
+    const shortSummary = sentences.slice(0, 2).join(" ") || "No readable text found in this file.";
+    return {
+      shortSummary,
+      bulletNotes: sentences.slice(0, 4),
+      keyConcepts: [sentences[0]?.split(" ").slice(0, 4).join(" ") || "Uploaded note"],
+      revisionNotes: ["Revise the core topic from the uploaded note."],
+      importantQuestions: ["What are the main ideas in this note?"],
+      formulaSheet: sentences.filter((sentence) => /=|\bformula\b|\bcalculate\b/i.test(sentence)).slice(0, 3),
+    };
+  }
+
+  function addLocalNote(title: string, text: string, source: string) {
+    const localNote: NoteItem = {
+      id: `local-${Date.now()}`,
+      title,
+      text,
+      source,
+      userId: demoUserId,
+      createdAt: new Date().toLocaleString(),
+    };
+
+    setNotes((current) => {
+      const next = current.filter((item) => item.id !== "sample-note");
+      return [localNote, ...next];
+    });
+    setSelectedNoteId(localNote.id);
+  }
+
+  async function persistNote(title: string, text: string, source: string) {
+    const services = getFirebaseServices();
+    if (!services) {
+      addLocalNote(title, text, source);
+      return { mode: "local" as const };
+    }
+
+    const noteId = await saveNote(demoUserId, { title, text, source });
+    setSelectedNoteId(noteId);
+    return { mode: "firebase" as const };
+  }
 
   useEffect(() => {
     const services = getFirebaseServices();
@@ -61,9 +105,32 @@ export default function DashboardPage() {
 
   async function handleUploadFile(file: File) {
     setBusy(true);
+    setUploadStatus("Extracting and analyzing PDF...");
     try {
       const extracted = await extractNoteText(file);
-      await saveNote(demoUserId, { title: extracted.title, text: extracted.text, source: file.name });
+      const cleanedText = extracted.text.trim();
+      if (!cleanedText) {
+        throw new Error("No readable text found in this PDF.");
+      }
+
+      let artifact: NoteArtifact;
+      try {
+        const artifactResponse = await getNoteSummary(cleanedText, language);
+        artifact = artifactResponse.artifact;
+      } catch {
+        artifact = buildFallbackArtifact(cleanedText);
+      }
+
+      setSummary(artifact);
+      const result = await persistNote(extracted.title, cleanedText, file.name);
+      setUploadStatus(
+        result.mode === "firebase"
+          ? "PDF analyzed and saved. Short summary is ready below."
+          : "PDF analyzed. Short summary is ready below (saved locally).",
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Please try another PDF.";
+      setUploadStatus(`Unable to analyze this file. ${message}`);
     } finally {
       setBusy(false);
     }
@@ -75,8 +142,27 @@ export default function DashboardPage() {
     }
 
     setBusy(true);
+    setUploadStatus("Saving and analyzing notes...");
     try {
-      await saveNote(demoUserId, { title: "Pasted notes", text: text.trim(), source: "Manual entry" });
+      const cleanedText = text.trim();
+      let artifact: NoteArtifact;
+      try {
+        const artifactResponse = await getNoteSummary(cleanedText, language);
+        artifact = artifactResponse.artifact;
+      } catch {
+        artifact = buildFallbackArtifact(cleanedText);
+      }
+
+      setSummary(artifact);
+      const result = await persistNote("Pasted notes", cleanedText, "Manual entry");
+      setUploadStatus(
+        result.mode === "firebase"
+          ? "Notes analyzed and saved. Short summary is ready below."
+          : "Notes analyzed. Short summary is ready below (saved locally).",
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Please try again.";
+      setUploadStatus(`Unable to analyze these notes right now. ${message}`);
     } finally {
       setBusy(false);
     }
@@ -96,7 +182,13 @@ export default function DashboardPage() {
     <AppShell title="Dashboard" userName="Student">
       <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
         <div className="space-y-5">
-          <UploadCard busy={busy} onUploadFile={handleUploadFile} onSaveText={handleSaveText} />
+          <UploadCard
+            busy={busy}
+            onUploadFile={handleUploadFile}
+            onSaveText={handleSaveText}
+            statusMessage={uploadStatus}
+            shortSummary={summary?.shortSummary}
+          />
 
           <section className="glass-panel rounded-[1.75rem] p-5 sm:p-6">
             <div className="flex items-center justify-between gap-3">

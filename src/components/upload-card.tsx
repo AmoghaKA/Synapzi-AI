@@ -7,10 +7,14 @@ export function UploadCard({
   onUploadFile,
   onSaveText,
   busy,
+  shortSummary,
+  statusMessage,
 }: {
-  onUploadFile: (file: File) => void;
-  onSaveText: (text: string) => void;
+  onUploadFile: (file: File) => void | Promise<void>;
+  onSaveText: (text: string) => void | Promise<void>;
   busy?: boolean;
+  shortSummary?: string;
+  statusMessage?: string;
 }) {
   const [text, setText] = useState("");
 
@@ -46,6 +50,15 @@ export function UploadCard({
           {busy ? "Working..." : "Save notes"}
         </button>
       </div>
+
+      {statusMessage ? <p className="mt-3 text-sm text-cyan-700 dark:text-cyan-200">{statusMessage}</p> : null}
+
+      {shortSummary ? (
+        <div className="mt-4 rounded-[1.25rem] bg-white/70 p-4 dark:bg-white/5">
+          <p className="text-sm font-semibold text-slate-950 dark:text-white">Short summary</p>
+          <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{shortSummary}</p>
+        </div>
+      ) : null}
     </section>
   );
 }

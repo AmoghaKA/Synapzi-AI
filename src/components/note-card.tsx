@@ -16,7 +16,7 @@ export function NoteCard({
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-base font-semibold text-slate-950 dark:text-white">{note.title}</p>
-          <p className="mt-1 text-sm text-[var(--muted)]">{note.createdAt}</p>
+          <p suppressHydrationWarning className="mt-1 text-sm text-[var(--muted)]">{note.createdAt}</p>
         </div>
         <div className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-700 dark:text-cyan-200">Note</div>
       </div>

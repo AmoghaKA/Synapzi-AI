@@ -25,15 +25,13 @@ export function AppShell({
 }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
+  useEffect(() => {
     const savedTheme = window.localStorage.getItem("synapzi-theme") as "light" | "dark" | null;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return savedTheme ?? (prefersDark ? "dark" : "light");
-  });
+    setTheme(savedTheme ?? (prefersDark ? "dark" : "light"));
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
