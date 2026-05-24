@@ -1,4 +1,4 @@
-# Synapzi AI (formerly NoteMind AI)
+# Synapzi AI 
 
 Synapzi AI is a simple AI-powered student learning platform demo — upload PDFs or notes and use AI to generate summaries, quizzes, revision notes, and chat with your uploaded material.
 
