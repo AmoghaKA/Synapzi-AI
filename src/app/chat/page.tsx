@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { ChatBox } from "@/components/chat-box";
 import { askNoteQuestion, loadNotes, type ChatMessage, type NoteItem, type StudyLanguage } from "@/lib/notemind";
-import { useAuthUser } from "@/lib/use-auth-user";
+
+const demoUserId = "demo-user";
 
 export default function ChatPage() {
-  const router = useRouter();
-  const { user, loading } = useAuthUser();
   const [notes, setNotes] = useState<NoteItem[]>([]);
   const [activeNoteId, setActiveNoteId] = useState(() => {
     if (typeof window === "undefined") {
@@ -23,21 +21,11 @@ export default function ChatPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!user && !loading) {
-      router.replace("/login");
-    }
-  }, [loading, router, user]);
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    loadNotes(user.uid).then((nextNotes) => {
+    loadNotes(demoUserId).then((nextNotes) => {
       setNotes(nextNotes);
       setActiveNoteId((current) => current || nextNotes[0]?.id || "");
     });
-  }, [user]);
+  }, []);
 
   const selectedNote = useMemo(() => notes.find((note) => note.id === activeNoteId) ?? notes[0], [notes, activeNoteId]);
 
@@ -57,7 +45,7 @@ export default function ChatPage() {
   }
 
   return (
-    <AppShell title="Chat" userName={user?.displayName || user?.email || "Student"}>
+    <AppShell title="Chat" userName="Student">
       <ChatBox
         notes={notes}
         activeNoteId={activeNoteId}

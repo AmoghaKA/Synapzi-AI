@@ -15,12 +15,10 @@ import {
   Menu,
   MessageSquare,
   Mic,
-  MoonStar,
   Play,
   Shield,
   Sparkles,
   Star,
-  SunMedium,
   Users,
   X,
   Zap,
@@ -176,21 +174,12 @@ function GlassCard({ children, className = "" }: { children: ReactNode; classNam
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
-
-    const savedTheme = window.localStorage.getItem("notemind-theme") as "light" | "dark" | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return savedTheme ?? (prefersDark ? "dark" : "light");
-  });
   const [activeFaq, setActiveFaq] = useState<number>(0);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    window.localStorage.setItem("notemind-theme", theme);
-  }, [theme]);
+    document.documentElement.classList.add("dark");
+    window.localStorage.setItem("notemind-theme", "dark");
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -232,14 +221,6 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-              className="hidden rounded-full border border-white/10 bg-white/70 px-4 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:-translate-y-0.5 dark:bg-white/5 dark:text-white sm:inline-flex"
-            >
-              {theme === "dark" ? <SunMedium className="mr-2 h-4 w-4" /> : <MoonStar className="mr-2 h-4 w-4" />}
-              {theme === "dark" ? "Light" : "Dark"}
-            </button>
             <a
               href="#contact"
               className="hidden rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950 sm:inline-flex"

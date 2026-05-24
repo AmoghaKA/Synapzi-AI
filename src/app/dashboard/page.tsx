@@ -1,19 +1,27 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { AppShell } from "@/components/app-shell";
 import { NoteCard } from "@/components/note-card";
 import { UploadCard } from "@/components/upload-card";
 import { getFirebaseServices } from "@/lib/firebase";
 import { extractNoteText, getNoteSummary, removeNote, saveNote, type NoteArtifact, type NoteItem, type StudyLanguage } from "@/lib/notemind";
-import { useAuthUser } from "@/lib/use-auth-user";
+
+const demoUserId = "demo-user";
+const sampleNotes: NoteItem[] = [
+  {
+    id: "sample-note",
+    title: "Sample Physics Notes",
+    text: "Force, motion, and energy are key ideas in this chapter. Use the dashboard to upload a PDF and generate quizzes.",
+    source: "Sample content",
+    userId: demoUserId,
+    createdAt: new Date().toLocaleString(),
+  },
+];
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { user, loading } = useAuthUser();
-  const [notes, setNotes] = useState<NoteItem[]>([]);
+  const [notes, setNotes] = useState<NoteItem[]>(sampleNotes);
   const [selectedNoteId, setSelectedNoteId] = useState(() => {
     if (typeof window === "undefined") {
       return "";
@@ -26,16 +34,12 @@ export default function DashboardPage() {
   const [language] = useState<StudyLanguage>("English");
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
-
     const services = getFirebaseServices();
     if (!services) {
       return;
     }
 
-    const noteQuery = query(collection(services.db, "notes"), where("userId", "==", user.uid));
+    const noteQuery = query(collection(services.db, "notes"), where("userId", "==", demoUserId));
     return onSnapshot(noteQuery, (snapshot) => {
       const nextNotes = snapshot.docs.map((item) => {
         const data = item.data() as Record<string, unknown>;
@@ -44,45 +48,35 @@ export default function DashboardPage() {
           title: String(data.title ?? "Untitled note"),
           text: String(data.text ?? ""),
           source: String(data.source ?? "Manual entry"),
-          userId: String(data.userId ?? user.uid),
+          userId: String(data.userId ?? demoUserId),
           createdAt: data.createdAt && typeof data.createdAt === "object" && "toDate" in data.createdAt ? (data.createdAt as { toDate: () => Date }).toDate().toLocaleString() : new Date().toLocaleString(),
         } satisfies NoteItem;
       });
-      setNotes(nextNotes);
+      setNotes(nextNotes.length ? nextNotes : sampleNotes);
       setSelectedNoteId((current) => current || nextNotes[0]?.id || "");
     });
-  }, [user]);
+  }, []);
 
   const selectedNote = useMemo(() => notes.find((note) => note.id === selectedNoteId) ?? notes[0], [notes, selectedNoteId]);
 
-  useEffect(() => {
-    if (!user && !loading) {
-      router.replace("/login");
-    }
-  }, [loading, router, user]);
-
   async function handleUploadFile(file: File) {
-    if (!user) {
-      return;
-    }
-
     setBusy(true);
     try {
       const extracted = await extractNoteText(file);
-      await saveNote(user.uid, { title: extracted.title, text: extracted.text, source: file.name });
+      await saveNote(demoUserId, { title: extracted.title, text: extracted.text, source: file.name });
     } finally {
       setBusy(false);
     }
   }
 
   async function handleSaveText(text: string) {
-    if (!user || !text.trim()) {
+    if (!text.trim()) {
       return;
     }
 
     setBusy(true);
     try {
-      await saveNote(user.uid, { title: "Pasted notes", text: text.trim(), source: "Manual entry" });
+      await saveNote(demoUserId, { title: "Pasted notes", text: text.trim(), source: "Manual entry" });
     } finally {
       setBusy(false);
     }
@@ -99,7 +93,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <AppShell title="Dashboard" userName={user?.displayName || user?.email || "Student"}>
+    <AppShell title="Dashboard" userName="Student">
       <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
         <div className="space-y-5">
           <UploadCard busy={busy} onUploadFile={handleUploadFile} onSaveText={handleSaveText} />

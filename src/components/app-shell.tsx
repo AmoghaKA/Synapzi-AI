@@ -4,9 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { LayoutDashboard, MessageSquareText, MoonStar, NotebookPen, ScrollText, Sparkles, SunMedium, LogOut, Menu, UserCircle2 } from "lucide-react";
-import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { getFirebaseServices } from "@/lib/firebase";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -43,10 +41,6 @@ export function AppShell({
   }, [theme]);
 
   async function handleLogout() {
-    const services = getFirebaseServices();
-    if (services) {
-      await signOut(services.auth);
-    }
     router.push("/login");
   }
 

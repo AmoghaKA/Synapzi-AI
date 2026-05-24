@@ -1,53 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { getFirebaseServices } from "@/lib/firebase";
-import { useAuthUser } from "@/lib/use-auth-user";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading } = useAuthUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    if (user) {
-      router.replace("/dashboard");
-    }
-  }, [router, user]);
-
-  async function signInWithGoogle() {
-    const services = getFirebaseServices();
-    if (!services) {
-      setMessage("Firebase is not configured yet.");
-      return;
-    }
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(services.auth, provider);
+  function signInWithGoogle() {
     router.push("/dashboard");
   }
 
-  async function signIn(isSignUp: boolean) {
-    const services = getFirebaseServices();
-    if (!services) {
-      setMessage("Firebase is not configured yet.");
-      return;
-    }
-
-    if (!email || !password) {
-      setMessage("Enter email and password.");
-      return;
-    }
-
-    if (isSignUp) {
-      await createUserWithEmailAndPassword(services.auth, email, password);
-    } else {
-      await signInWithEmailAndPassword(services.auth, email, password);
-    }
-
+  function signIn() {
     router.push("/dashboard");
   }
 
@@ -72,13 +37,11 @@ export default function LoginPage() {
           <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="Email" className="w-full rounded-full border border-white/10 bg-white/80 px-4 py-3 text-sm outline-none dark:bg-slate-950/50 dark:text-white" />
           <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="Password" className="w-full rounded-full border border-white/10 bg-white/80 px-4 py-3 text-sm outline-none dark:bg-slate-950/50 dark:text-white" />
           <div className="grid grid-cols-2 gap-3">
-            <button type="button" onClick={() => signIn(false)} className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-white">Sign in</button>
-            <button type="button" onClick={() => signIn(true)} className="rounded-full border border-white/10 bg-white/70 px-5 py-3 text-sm font-semibold dark:bg-white/5">Sign up</button>
+            <button type="button" onClick={signIn} className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-white">Sign in</button>
+            <button type="button" onClick={signIn} className="rounded-full border border-white/10 bg-white/70 px-5 py-3 text-sm font-semibold dark:bg-white/5">Sign up</button>
           </div>
         </div>
 
-        {message ? <p className="mt-4 text-sm text-rose-500">{message}</p> : null}
-        {loading ? <p className="mt-4 text-sm text-slate-500">Checking session...</p> : null}
       </section>
     </main>
   );
