@@ -48,7 +48,7 @@ export default function DashboardPage() {
     };
   }
 
-  function addLocalNote(title: string, text: string, source: string) {
+  function addLocalNote(title: string, text: string, source: string, artifact?: NoteArtifact) {
     const localNote: NoteItem = {
       id: `local-${Date.now()}`,
       title,
@@ -56,6 +56,7 @@ export default function DashboardPage() {
       source,
       userId: demoUserId,
       createdAt: new Date().toLocaleString(),
+      artifact,
     };
 
     setNotes((current) => {
@@ -65,14 +66,14 @@ export default function DashboardPage() {
     setSelectedNoteId(localNote.id);
   }
 
-  async function persistNote(title: string, text: string, source: string) {
+  async function persistNote(title: string, text: string, source: string, artifact?: NoteArtifact) {
     const services = getFirebaseServices();
     if (!services) {
-      addLocalNote(title, text, source);
+      addLocalNote(title, text, source, artifact);
       return { mode: "local" as const };
     }
 
-    const noteId = await saveNote(demoUserId, { title, text, source });
+    const noteId = await saveNote(demoUserId, { title, text, source, artifact });
     setSelectedNoteId(noteId);
     return { mode: "firebase" as const };
   }
@@ -87,6 +88,7 @@ export default function DashboardPage() {
     return onSnapshot(noteQuery, (snapshot) => {
       const nextNotes = snapshot.docs.map((item) => {
         const data = item.data() as Record<string, unknown>;
+        const artifact = data.artifact && typeof data.artifact === "object" ? (data.artifact as NoteArtifact) : undefined;
         return {
           id: item.id,
           title: String(data.title ?? "Untitled note"),
@@ -94,6 +96,7 @@ export default function DashboardPage() {
           source: String(data.source ?? "Manual entry"),
           userId: String(data.userId ?? demoUserId),
           createdAt: data.createdAt && typeof data.createdAt === "object" && "toDate" in data.createdAt ? (data.createdAt as { toDate: () => Date }).toDate().toLocaleString() : new Date().toLocaleString(),
+          artifact,
         } satisfies NoteItem;
       });
       setNotes(nextNotes.length ? nextNotes : sampleNotes);
@@ -122,7 +125,7 @@ export default function DashboardPage() {
       }
 
       setSummary(artifact);
-      const result = await persistNote(extracted.title, cleanedText, file.name);
+      const result = await persistNote(extracted.title, cleanedText, file.name, artifact);
       setUploadStatus(
         result.mode === "firebase"
           ? "PDF analyzed and saved. Short summary is ready below."
@@ -154,7 +157,7 @@ export default function DashboardPage() {
       }
 
       setSummary(artifact);
-      const result = await persistNote("Pasted notes", cleanedText, "Manual entry");
+      const result = await persistNote("Pasted notes", cleanedText, "Manual entry", artifact);
       setUploadStatus(
         result.mode === "firebase"
           ? "Notes analyzed and saved. Short summary is ready below."
@@ -174,9 +177,17 @@ export default function DashboardPage() {
 
   async function handleSummary(note: NoteItem) {
     setSelectedNoteId(note.id);
+    if (note.artifact) {
+      setSummary(note.artifact);
+      return;
+    }
+
     const data = await getNoteSummary(note.text, language);
     setSummary(data.artifact);
+    setNotes((current) => current.map((item) => (item.id === note.id ? { ...item, artifact: data.artifact } : item)));
   }
+
+  const selectedSummary = selectedNote?.artifact ?? summary ?? null;
 
   return (
     <AppShell title="Dashboard" userName="Student">
@@ -187,7 +198,7 @@ export default function DashboardPage() {
             onUploadFile={handleUploadFile}
             onSaveText={handleSaveText}
             statusMessage={uploadStatus}
-            shortSummary={summary?.shortSummary}
+            shortSummary={selectedSummary?.shortSummary}
           />
 
           <section className="glass-panel rounded-[1.75rem] p-5 sm:p-6">
@@ -218,24 +229,53 @@ export default function DashboardPage() {
         <section className="glass-panel rounded-[1.75rem] p-5 sm:p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300/90">Selected note</p>
           <h2 className="mt-2 text-xl font-semibold text-slate-950 dark:text-white">{selectedNote?.title || "Choose a note"}</h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{selectedNote?.text || "Upload or select a note to preview summaries, chat, quizzes, and revision tools."}</p>
 
-          {summary ? (
+          {selectedSummary ? (
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5 md:col-span-2">
                 <p className="text-sm font-semibold text-slate-950 dark:text-white">Short summary</p>
-                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{summary.shortSummary}</p>
+                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{selectedSummary.shortSummary}</p>
               </div>
               <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5">
                 <p className="text-sm font-semibold text-slate-950 dark:text-white">Key concepts</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {summary.keyConcepts.map((item) => <span key={item} className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-700 dark:text-cyan-200">{item}</span>)}
+                  {selectedSummary.keyConcepts.map((item) => (
+                    <span key={item} className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-700 dark:text-cyan-200">
+                      {item}
+                    </span>
+                  ))}
                 </div>
               </div>
               <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5">
                 <p className="text-sm font-semibold text-slate-950 dark:text-white">Bullet points</p>
                 <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  {summary.bulletNotes.map((item) => <li key={item}>{item}</li>)}
+                  {selectedSummary.bulletNotes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">Revision notes</p>
+                <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  {selectedSummary.revisionNotes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">Important questions</p>
+                <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  {selectedSummary.importantQuestions.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-[1.25rem] bg-white/60 p-4 dark:bg-white/5 md:col-span-2">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">Formula sheet</p>
+                <ul className="mt-2 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  {selectedSummary.formulaSheet.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>

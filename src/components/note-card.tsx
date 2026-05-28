@@ -23,6 +23,13 @@ export function NoteCard({
 
       <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{note.text}</p>
 
+      {note.artifact ? (
+        <div className="mt-4 rounded-[1.25rem] bg-white/70 p-4 dark:bg-white/5">
+          <p className="text-sm font-semibold text-slate-950 dark:text-white">Summary</p>
+          <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{note.artifact.shortSummary}</p>
+        </div>
+      ) : null}
+
       <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Link href={`/dashboard?note=${note.id}`} className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/70 px-3 py-2 text-xs font-medium transition hover:bg-white dark:bg-white/5">
           <BookOpenText className="mr-1.5 h-3.5 w-3.5" />

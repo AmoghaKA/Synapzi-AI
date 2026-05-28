@@ -10,6 +10,7 @@ export type NoteItem = {
   source: string;
   userId: string;
   createdAt: string;
+  artifact?: NoteArtifact;
 };
 
 export type ChatMessage = {
@@ -59,6 +60,7 @@ export async function saveNote(userId: string, note: Omit<NoteItem, "id" | "user
     title: note.title,
     text: note.text,
     source: note.source,
+    artifact: note.artifact ?? null,
     createdAt: serverTimestamp(),
   });
 
@@ -76,6 +78,7 @@ export async function loadNotes(userId: string) {
 
   return snapshot.docs.map((item) => {
     const data = item.data() as DocumentData;
+    const artifact = data.artifact && typeof data.artifact === "object" ? (data.artifact as NoteArtifact) : undefined;
     return {
       id: item.id,
       title: String(data.title ?? "Untitled note"),
@@ -83,6 +86,7 @@ export async function loadNotes(userId: string) {
       source: String(data.source ?? "Manual entry"),
       userId: String(data.userId ?? userId),
       createdAt: data.createdAt?.toDate?.().toLocaleString?.() ?? new Date().toLocaleString(),
+      artifact,
     } satisfies NoteItem;
   });
 }
