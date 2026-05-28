@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, where, type DocumentData } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type DocumentData } from "firebase/firestore";
 import { getFirebaseServices } from "@/lib/firebase";
 
 export type StudyLanguage = "English" | "Hindi" | "Kannada";
@@ -26,6 +26,65 @@ export type NoteArtifact = {
   importantQuestions: string[];
   formulaSheet: string[];
 };
+
+export type ExamArtifact = {
+  quickSummary: string;
+  importantTopics: string[];
+  quickRevisionNotes: string[];
+  probableQuestions: string[];
+  formulas: string[];
+  definitions: string[];
+  fastRevisionMode: string[];
+};
+
+export type UserProfile = {
+  fullName: string;
+  phone: string;
+  email: string;
+  school: string;
+  city: string;
+  goal: string;
+  preferredLanguage: StudyLanguage;
+};
+
+export const demoProfile: UserProfile = {
+  fullName: "Student User",
+  phone: "+91 90000 00000",
+  email: "student@synapzi.ai",
+  school: "Synapzi Academy",
+  city: "Bengaluru",
+  goal: "Prepare for exams faster with AI notes and revision tools.",
+  preferredLanguage: "English",
+};
+
+export const demoNotes: NoteItem[] = [
+  {
+    id: "sample-note",
+    title: "Sample Physics Notes",
+    text: "Force, motion, and energy are key ideas in this chapter. Use the chat to ask what each concept means, how formulas work, and which points matter most for revision.",
+    source: "Demo content",
+    userId: "demo-user",
+    createdAt: "Just now",
+    artifact: {
+      shortSummary: "This chapter explains how force changes motion and how energy is used in everyday examples.",
+      bulletNotes: [
+        "Force changes motion.",
+        "Energy can be transferred.",
+        "Revision should focus on definitions and formulas.",
+      ],
+      keyConcepts: ["Force", "Motion", "Energy"],
+      revisionNotes: [
+        "Revise the main definitions before attempting problems.",
+        "Review formulas and examples carefully.",
+      ],
+      importantQuestions: [
+        "What is force?",
+        "How does energy transfer in motion?",
+      ],
+      formulaSheet: ["Work = Force x Distance"],
+    },
+  },
+];
 
 const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
@@ -70,7 +129,7 @@ export async function saveNote(userId: string, note: Omit<NoteItem, "id" | "user
 export async function loadNotes(userId: string) {
   const services = getFirebaseServices();
   if (!services) {
-    return [] as NoteItem[];
+    return demoNotes.map((note) => ({ ...note, userId }));
   }
 
   const noteQuery = query(collection(services.db, "notes"), where("userId", "==", userId));
@@ -124,4 +183,59 @@ export async function askNoteQuestion(noteText: string, question: string, langua
 
 export async function createNoteQuiz(noteText: string, language: StudyLanguage) {
   return postJson<{ quiz: Array<{ id: string; type: string; question: string; options?: string[]; answer: string; explanation: string }> }>('/ai/quiz', { noteText, language });
+}
+
+export async function getExamMode(noteText: string, language: StudyLanguage) {
+  return postJson<{ artifact: ExamArtifact }>('/ai/exam', { noteText, language });
+}
+
+function getProfileStorageKey(userId: string) {
+  return `synapzi-profile:${userId}`;
+}
+
+export async function loadUserProfile(userId: string) {
+  const services = getFirebaseServices();
+  if (!services) {
+    if (typeof window === "undefined") {
+      return { ...demoProfile };
+    }
+
+    const stored = window.localStorage.getItem(getProfileStorageKey(userId));
+    return stored ? ({ ...demoProfile, ...JSON.parse(stored) } as UserProfile) : { ...demoProfile };
+  }
+
+  const profileRef = doc(services.db, "profiles", userId);
+  const snapshot = await getDoc(profileRef);
+
+  if (!snapshot.exists()) {
+    return { ...demoProfile };
+  }
+
+  const data = snapshot.data() as Partial<UserProfile> & { userId?: string };
+  return {
+    fullName: String(data.fullName ?? demoProfile.fullName),
+    phone: String(data.phone ?? demoProfile.phone),
+    email: String(data.email ?? demoProfile.email),
+    school: String(data.school ?? demoProfile.school),
+    city: String(data.city ?? demoProfile.city),
+    goal: String(data.goal ?? demoProfile.goal),
+    preferredLanguage: data.preferredLanguage === "Hindi" || data.preferredLanguage === "Kannada" ? data.preferredLanguage : "English",
+  };
+}
+
+export async function saveUserProfile(userId: string, profile: UserProfile) {
+  const services = getFirebaseServices();
+  if (!services) {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(getProfileStorageKey(userId), JSON.stringify(profile));
+    }
+
+    return;
+  }
+
+  await setDoc(doc(services.db, "profiles", userId), {
+    userId,
+    ...profile,
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
 }

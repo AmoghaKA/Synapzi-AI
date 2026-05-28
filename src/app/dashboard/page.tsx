@@ -190,7 +190,7 @@ export default function DashboardPage() {
   const selectedSummary = selectedNote?.artifact ?? summary ?? null;
 
   return (
-    <AppShell title="Dashboard" userName="Student">
+    <AppShell title="Dashboard" userName="Student" defaultTheme="dark" themeLocked>
       <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
         <div className="space-y-5">
           <UploadCard

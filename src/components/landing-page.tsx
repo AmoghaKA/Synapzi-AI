@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import {
   ArrowRight,
   BarChart3,
@@ -152,6 +153,44 @@ const dashboardCards = [
   { title: "Uploaded notes", value: "12", detail: "PDFs and typed notes", accent: "from-cyan-400/30 to-sky-500/15" },
   { title: "AI summaries", value: "5", detail: "Key points and revision", accent: "from-emerald-400/30 to-teal-500/15" },
   { title: "Quiz types", value: "3", detail: "MCQ, T/F, short answer", accent: "from-indigo-400/30 to-violet-500/15" },
+];
+
+const chatHighlights = [
+  {
+    title: "Grounded in your notes",
+    description: "Answers stay tied to the uploaded chapter, so students get focused help instead of generic responses.",
+  },
+  {
+    title: "Follow-up questions stay in context",
+    description: "Students can keep asking until the idea clicks, which makes revision feel like a real tutor session.",
+  },
+  {
+    title: "Built for multilingual study",
+    description: "The same note can be studied in English, Hindi, or Kannada without changing the workflow.",
+  },
+];
+
+const chatMessages = [
+  {
+    role: "user",
+    content: "Explain the main idea behind this chapter in simple language.",
+  },
+  {
+    role: "assistant",
+    content: "The chapter focuses on force, motion, and energy. It explains how objects move, how forces change motion, and how energy is transferred in everyday examples.",
+    source: "From uploaded notes",
+  },
+  {
+    role: "assistant",
+    content: "You can ask a follow-up about formulas, definitions, or a specific paragraph if you want a shorter revision answer.",
+    source: "Context preserved",
+  },
+];
+
+const chatSignals = [
+  { label: "Source-grounded", value: "Yes" },
+  { label: "Languages", value: "3" },
+  { label: "Follow-ups", value: "Unlimited" },
 ];
 
 const chartBars = [52, 74, 58, 86, 64, 92, 78];
@@ -453,22 +492,49 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
           >
             <SectionHeading
-              eyebrow="Dashboard"
-              title="Chat with notes is the core experience."
-              description="Students can open a note, ask a question, and get answers based only on the uploaded study material."
+              eyebrow="Chat With Notes"
+              title="Ask questions from your notes and get answers grounded in the source."
+              description="Students open a note, ask a question, and continue the conversation with responses that stay tied to the uploaded material."
             />
 
             <div className="mt-8 space-y-4">
               {[
-                "Upload PDFs or paste notes in seconds",
-                "Ask questions and get answers only from notes",
-                "Generate summaries, quizzes, and revision tools quickly",
+                "Open any saved note and start a grounded conversation immediately",
+                "Keep follow-up questions in context for deeper revision",
+                "Move from chat to summary, quiz, or revision in one workflow",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/70 p-4 text-sm text-slate-700 dark:bg-white/5 dark:text-slate-200">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
                   <span>{item}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {chatSignals.map((signal) => (
+                <div key={signal.label} className="rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">{signal.label}</p>
+                  <p className="mt-2 text-2xl font-semibold text-slate-950 dark:text-white">{signal.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 space-y-4">
+              {chatHighlights.map((item) => (
+                <div key={item.title} className="rounded-[1.25rem] border border-white/10 bg-white/70 p-5 dark:bg-white/5">
+                  <p className="text-sm font-semibold text-slate-950 dark:text-white">{item.title}</p>
+                  <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/chat?note=sample-note" className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
+                Try Chat With Notes <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/70 px-6 py-3.5 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 dark:bg-white/5 dark:text-white">
+                Open Dashboard
+              </Link>
             </div>
           </motion.div>
 
@@ -479,68 +545,90 @@ export default function LandingPage() {
             transition={{ duration: 0.65 }}
             className="glass-panel rounded-[2rem] p-4 sm:p-6"
           >
-            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950 p-5 text-white dark:bg-slate-900">
+            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950 p-5 text-white shadow-2xl shadow-slate-950/25 dark:bg-slate-900">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Study preview</p>
-                  <h3 className="mt-1 text-xl font-semibold">Notes, chat, and revision in one dashboard</h3>
+                  <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/90">Grounded chat preview</p>
+                  <h3 className="mt-1 text-xl font-semibold">A realistic note-to-answer workflow</h3>
                 </div>
                 <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300">
                   <Globe className="h-3.5 w-3.5" />
-                  Live
+                  English
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                {dashboardCards.map((card) => (
-                  <div key={card.title} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{card.title}</p>
-                    <p className="mt-3 text-3xl font-semibold">{card.value}</p>
-                    <p className="mt-2 text-sm text-slate-300">{card.detail}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-4 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-slate-200">Study progress</p>
-                    <BarChart3 className="h-4 w-4 text-cyan-300" />
-                  </div>
-                  <div className="mt-5 flex h-52 items-end gap-2">
-                    {[42, 61, 75, 52, 88, 64, 94].map((height, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ height: 0 }}
-                        whileInView={{ height: `${height}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7, delay: index * 0.05 }}
-                        className="flex-1 rounded-t-2xl bg-gradient-to-t from-cyan-400 via-sky-400 to-emerald-300"
-                      />
-                    ))}
-                  </div>
-                </div>
-
+              <div className="mt-5 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
                 <div className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Selected note</p>
+                    <p className="mt-2 text-lg font-semibold text-white">Physics Chapter 4</p>
+                    <p className="mt-1 text-sm text-slate-300">Force, motion, and energy</p>
+                  </div>
+
                   <div className="rounded-2xl bg-white/5 p-4">
-                    <p className="text-sm text-slate-300">Recent activity</p>
-                    <div className="mt-4 space-y-3">
+                    <p className="text-sm text-slate-300">What the AI can answer</p>
+                    <div className="mt-3 space-y-3">
                       {[
-                        ["New user cohort", "+128 signups"],
-                        ["Template update", "Deployed 2h ago"],
-                        ["Demo requests", "18 today"],
-                      ].map(([title, detail]) => (
-                        <div key={title} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 px-3 py-2 text-sm">
-                          <span className="text-slate-200">{title}</span>
+                        ["Definitions", "What is force?"],
+                        ["Formula help", "How do I calculate work?"],
+                        ["Revision", "Explain this in simpler words"],
+                      ].map(([label, detail]) => (
+                        <div key={label} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 px-3 py-2 text-sm">
+                          <span className="text-slate-200">{label}</span>
                           <span className="text-slate-400">{detail}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-gradient-to-br from-cyan-400/20 via-sky-400/10 to-emerald-400/15 p-4">
-                    <p className="text-sm text-slate-200">Conversion snapshot</p>
-                    <p className="mt-2 text-4xl font-semibold text-white">8.6%</p>
-                    <p className="mt-2 text-sm text-slate-300">This section is ideal for a real product mockup, graph, or screenshot when you connect your final visuals.</p>
+
+                  <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4">
+                    <p className="text-sm text-emerald-100">Answer quality</p>
+                    <p className="mt-2 text-3xl font-semibold text-white">Source only</p>
+                    <p className="mt-2 text-sm text-emerald-50/80">Responses stay grounded in the uploaded note instead of drifting into generic AI output.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-4">
+                  {chatMessages.map((message, index) => (
+                    <div
+                      key={`${message.role}-${index}`}
+                      className={`rounded-[1.5rem] p-4 ${message.role === "user" ? "ml-auto max-w-[90%] bg-cyan-400/15 text-white" : "max-w-[92%] bg-white/5 text-slate-100"}`}
+                    >
+                      <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-[0.24em] text-slate-400">
+                        <span>{message.role === "user" ? "Student" : "Assistant"}</span>
+                        {"source" in message ? <span>{message.source}</span> : null}
+                      </div>
+                      <p className="mt-3 text-sm leading-7 text-slate-100">{message.content}</p>
+                    </div>
+                  ))}
+
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {dashboardCards.map((card) => (
+                      <div key={card.title} className={`rounded-3xl border border-white/10 bg-gradient-to-br ${card.accent} p-4`}>
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-300">{card.title}</p>
+                        <p className="mt-3 text-2xl font-semibold text-white">{card.value}</p>
+                        <p className="mt-2 text-xs text-slate-200/80">{card.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-white/10 bg-slate-900/80 p-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-slate-200">Session health</p>
+                      <BarChart3 className="h-4 w-4 text-cyan-300" />
+                    </div>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                      {[
+                        ["Context retained", "Yes"],
+                        ["Quick follow-ups", "Ready"],
+                        ["Study workflow", "Unified"],
+                      ].map(([label, value]) => (
+                        <div key={label} className="rounded-2xl bg-white/5 px-3 py-3">
+                          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{label}</p>
+                          <p className="mt-2 text-sm font-semibold text-white">{value}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

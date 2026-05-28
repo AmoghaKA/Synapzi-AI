@@ -24,6 +24,17 @@ export function ChatBox({
 }) {
   const [question, setQuestion] = useState("");
 
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!question.trim() || busy) {
+      return;
+    }
+
+    onSend(question);
+    setQuestion("");
+  }
+
   return (
     <section className="glass-panel flex min-h-[70vh] flex-col rounded-[1.75rem] p-5 sm:p-6">
       <div className="flex flex-col gap-4 border-b border-white/10 pb-4 sm:flex-row sm:items-center sm:justify-between">
@@ -55,7 +66,7 @@ export function ChatBox({
         ))}
       </div>
 
-      <div className="mt-4 flex gap-3">
+      <form className="mt-4 flex gap-3" onSubmit={handleSubmit}>
         <input
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
@@ -63,17 +74,13 @@ export function ChatBox({
           className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/80 px-4 py-3 text-sm outline-none dark:bg-slate-950/50 dark:text-white"
         />
         <button
-          type="button"
+          type="submit"
           disabled={busy}
-          onClick={() => {
-            onSend(question);
-            setQuestion("");
-          }}
           className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950"
         >
           {busy ? "Sending..." : "Send"}
         </button>
-      </div>
+      </form>
     </section>
   );
 }

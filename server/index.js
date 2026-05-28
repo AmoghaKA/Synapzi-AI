@@ -139,6 +139,45 @@ function buildLocalQuiz(text) {
     .slice(0, 9);
 }
 
+function uniqueValues(values) {
+  return [...new Set(values.map((value) => normalize(value)).filter(Boolean))];
+}
+
+function buildLocalExamArtifact(text) {
+  const sentences = splitSentences(text);
+  const importantTopics = uniqueValues(
+    sentences
+      .map((sentence) => sentence.split(" ").slice(0, 5).join(" "))
+      .filter(Boolean)
+  ).slice(0, 6);
+
+  const quickRevisionNotes = sentences.slice(0, 5).map((sentence) => sentence);
+
+  const probableQuestions = uniqueValues([
+    importantTopics[0] ? `Explain ${importantTopics[0]}.` : "Explain the main topic from the chapter.",
+    importantTopics[1] ? `What should you remember about ${importantTopics[1]}?` : "What are the key points from the note?",
+    "Which formulas or definitions are most important?",
+    "Write a short revision answer from the note.",
+  ]).slice(0, 4);
+
+  const formulas = sentences.filter((sentence) => /=|\bformula\b|\bcalculate\b|\bwork\b|\bspeed\b/i.test(sentence)).slice(0, 5);
+  const definitions = sentences.filter((sentence) => /\bis\b|\bare\b|\bmeans\b|\bdefined\b/i.test(sentence)).slice(0, 5);
+
+  return {
+    quickSummary: quickRevisionNotes.slice(0, 2).join(" ") || "No readable text found in the uploaded notes.",
+    importantTopics: importantTopics.length ? importantTopics : ["Main topic", "Key formulas", "Core definitions"],
+    quickRevisionNotes: quickRevisionNotes.length ? quickRevisionNotes : ["Review the note and identify the key concepts."],
+    probableQuestions,
+    formulas: formulas.length ? formulas : ["No explicit formulas found in the note."],
+    definitions: definitions.length ? definitions : ["No direct definitions detected in the note."],
+    fastRevisionMode: [
+      "Read the important topics once without stopping.",
+      "Memorize formulas and definitions before looking at the full text again.",
+      "Answer the probable questions aloud to test recall.",
+    ],
+  };
+}
+
 function buildLocalAnswer(
   noteText,
   question,
@@ -487,6 +526,75 @@ ${noteText.slice(0, 30000)}
       quiz: buildLocalQuiz(
         req.body?.noteText || ""
       ),
+    });
+  }
+});
+
+app.post("/ai/exam", async (req, res) => {
+  try {
+    const noteText = normalize(req.body?.noteText || "");
+    const language = req.body?.language || "English";
+
+    if (!noteText) {
+      return res.status(400).json({ error: "No note text provided." });
+    }
+
+    const localArtifact = buildLocalExamArtifact(noteText);
+    const prompt = `
+You are Synapzi AI.
+
+Language preference: ${language}
+
+Create a last-minute exam preparation pack from the uploaded notes.
+
+Return ONLY valid JSON in this exact shape:
+
+{
+  "quickSummary": "One concise summary paragraph",
+  "importantTopics": ["topic 1", "topic 2"],
+  "quickRevisionNotes": ["note 1", "note 2"],
+  "probableQuestions": ["question 1", "question 2"],
+  "formulas": ["formula 1"],
+  "definitions": ["definition 1"],
+  "fastRevisionMode": ["step 1", "step 2"]
+}
+
+Use only the uploaded notes. Keep the output concise, practical, and exam-focused.
+
+Notes:
+${noteText.slice(0, 30000)}
+`;
+
+    const geminiText = await askGemini(prompt);
+
+    if (!geminiText) {
+      return res.json({ artifact: localArtifact });
+    }
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(geminiText);
+    } catch {
+      parsed = localArtifact;
+    }
+
+    return res.json({
+      artifact: {
+        quickSummary: String(parsed.quickSummary || localArtifact.quickSummary),
+        importantTopics: Array.isArray(parsed.importantTopics) ? parsed.importantTopics.map(String) : localArtifact.importantTopics,
+        quickRevisionNotes: Array.isArray(parsed.quickRevisionNotes) ? parsed.quickRevisionNotes.map(String) : localArtifact.quickRevisionNotes,
+        probableQuestions: Array.isArray(parsed.probableQuestions) ? parsed.probableQuestions.map(String) : localArtifact.probableQuestions,
+        formulas: Array.isArray(parsed.formulas) ? parsed.formulas.map(String) : localArtifact.formulas,
+        definitions: Array.isArray(parsed.definitions) ? parsed.definitions.map(String) : localArtifact.definitions,
+        fastRevisionMode: Array.isArray(parsed.fastRevisionMode) ? parsed.fastRevisionMode.map(String) : localArtifact.fastRevisionMode,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.json({
+      artifact: buildLocalExamArtifact(req.body?.noteText || ""),
     });
   }
 });
