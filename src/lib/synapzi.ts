@@ -183,8 +183,12 @@ export async function askNoteQuestion(noteText: string, question: string, langua
   return postJson<{ answer: string }>('/ai/chat', { noteText, question, language });
 }
 
-export async function createNoteQuiz(noteText: string, language: StudyLanguage) {
-  return postJson<{ quiz: Array<{ id: string; type: string; question: string; options?: string[]; answer: string; explanation: string }> }>('/ai/quiz', { noteText, language });
+export async function createNoteQuiz(
+  noteText: string,
+  language: StudyLanguage,
+  options?: { count?: number; onlyMCQ?: boolean }
+) {
+  return postJson<{ quiz: Array<{ id: string; type: string; question: string; options?: string[]; answer: string; explanation: string }> }>('/ai/quiz', { noteText, language, ...(options ?? {}) });
 }
 
 export async function getExamMode(noteText: string, language: StudyLanguage) {

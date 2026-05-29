@@ -38,7 +38,7 @@ export default function QuizPage() {
 
     setBusy(true);
     try {
-      const data = await createNoteQuiz(selectedNote.text, language);
+      const data = await createNoteQuiz(selectedNote.text, language, { count: 5, onlyMCQ: true });
       setQuestions(data.quiz);
       setAnswers({});
       setScore(null);

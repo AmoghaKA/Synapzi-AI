@@ -461,6 +461,8 @@ app.post("/ai/quiz", async (req, res) => {
 
     const language =
       req.body?.language || "English";
+    const count = Number(req.body?.count || 5);
+    const onlyMCQ = Boolean(req.body?.onlyMCQ);
 
     const prompt = `
 You are Synapzi AI.
@@ -498,27 +500,40 @@ ${noteText.slice(0, 30000)}
     const geminiText =
       await askGemini(prompt);
 
-    if (!geminiText) {
-      return res.json({
-        quiz: buildLocalQuiz(noteText),
-      });
-    }
-
+    // Try to parse model output, fallback to local builder.
     let parsed;
 
     try {
-      parsed = JSON.parse(geminiText);
-    } catch {
-      parsed = {
-        quiz: buildLocalQuiz(noteText),
-      };
+      parsed = geminiText ? JSON.parse(geminiText) : { quiz: buildLocalQuiz(noteText) };
+    } catch (err) {
+      parsed = { quiz: buildLocalQuiz(noteText) };
     }
 
-    return res.json({
-      quiz:
-        parsed.quiz ||
-        buildLocalQuiz(noteText),
-    });
+    // Normalize to an array of quiz items
+    const rawQuiz = Array.isArray(parsed.quiz) ? parsed.quiz : (parsed.quiz && Array.isArray(parsed.quiz.items) ? parsed.quiz.items : buildLocalQuiz(noteText));
+
+    // Filter MCQs if requested
+    const mcqOnly = onlyMCQ ? rawQuiz.filter((q) => String(q.type || '').toLowerCase().includes('mcq')) : rawQuiz;
+
+    // Ensure we have at most `count` items, default to MCQs generated from local builder if insufficient
+    let finalQuiz = mcqOnly.slice(0, Math.max(0, count));
+
+    if (finalQuiz.length < count) {
+      const local = buildLocalQuiz(noteText).filter((q) => String(q.type || '').toLowerCase().includes('mcq'));
+      finalQuiz = finalQuiz.concat(local).slice(0, count);
+    }
+
+    // Guarantee each item has required fields
+    finalQuiz = finalQuiz.map((q, idx) => ({
+      id: String(q.id ?? `q-${idx}`),
+      type: String(q.type ?? 'MCQ'),
+      question: String(q.question ?? ''),
+      options: Array.isArray(q.options) ? q.options.map(String) : [],
+      answer: String(q.answer ?? (Array.isArray(q.options) ? q.options[0] : '')),
+      explanation: String(q.explanation ?? ''),
+    }));
+
+    return res.json({ quiz: finalQuiz });
   } catch (error) {
     console.error(error);
 
