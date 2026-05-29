@@ -37,47 +37,12 @@ export function ExamModeCard({
   return (
     <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
       <div className="space-y-6">
-        <div className="glass-panel relative overflow-hidden rounded-[2rem] p-5 sm:p-6">
-          <div className="pointer-events-none absolute -right-10 top-0 h-40 w-40 rounded-full bg-cyan-400/10 blur-3xl" />
-          <div className="pointer-events-none absolute -left-16 bottom-0 h-44 w-44 rounded-full bg-emerald-400/10 blur-3xl" />
-
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">
-              <Sparkles className="h-4 w-4" />
-              Exam Mode
-            </div>
-
-            <h1 className="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-slate-950 text-balance dark:text-white sm:text-5xl">
-              Fast, reliable exam prep built from your own notes.
-            </h1>
-
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
-              Upload a PDF, paste notes, or use a saved note. Exam Mode generates important topics, probable exam questions, concise revision notes, formulas, and definitions in a clean one-night revision layout.
-            </p>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              {[
-                ["Important topics", "Prioritized from the note"],
-                ["Probable questions", "Expected exam prompts"],
-                ["Fast revision", "Quick enough for tonight"],
-              ].map(([title, detail]) => (
-                <div key={title} className="rounded-[1.25rem] border border-white/10 bg-white/60 p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                  <p className="text-sm font-semibold text-slate-950 dark:text-white">{title}</p>
-                  <p className="mt-2 text-xs leading-6 text-slate-600 dark:text-slate-400">{detail}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/60 px-3 py-2 dark:bg-white/5">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                Source-grounded answers
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/60 px-3 py-2 dark:bg-white/5">
-                <TimerReset className="h-4 w-4 text-cyan-300" />
-                One-night study flow
-              </span>
-            </div>
+        <div className="p-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">Exam Mode</p>
+            <h1 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">Fast, reliable exam prep</h1>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Upload a PDF, paste notes, or use a saved note — concise, priority-based revision for one-night study.</p>
+            <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Important topics · Probable questions · Fast revision</p>
           </div>
         </div>
 
@@ -164,129 +129,52 @@ export function ExamModeCard({
             {busy && !artifact ? (
               <motion.div
                 key="loading"
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                className="mt-5 grid gap-4"
+                exit={{ opacity: 0, y: -6 }}
+                className="mt-5"
               >
-                <div className="h-32 animate-pulse rounded-[1.5rem] bg-gradient-to-br from-white/10 to-white/5" />
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="h-44 animate-pulse rounded-[1.5rem] bg-gradient-to-br from-white/10 to-white/5" />
-                  <div className="h-44 animate-pulse rounded-[1.5rem] bg-gradient-to-br from-white/10 to-white/5" />
-                </div>
+                <div className="h-4 w-3/4 animate-pulse bg-white/10 rounded"></div>
+                <div className="mt-3 h-3 w-1/2 animate-pulse bg-white/8 rounded"></div>
               </motion.div>
             ) : artifact ? (
               <motion.div
                 key="content"
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                className="mt-5 grid gap-4"
+                exit={{ opacity: 0, y: -6 }}
+                className="mt-5"
               >
-                <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                  <div className="flex items-center gap-3 text-cyan-300/90">
-                    <Clock3 className="h-4 w-4" />
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em]">Quick summary</p>
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{artifact.quickSummary}</p>
-                </div>
+                <div className="prose max-w-none text-slate-900 dark:text-slate-200">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">Exam bundle</p>
+                  <h3 className="mt-1 text-2xl font-semibold">One-night preparation bundle</h3>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <Target className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Important topics</p>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                      {artifact.importantTopics.map((item) => (
-                        <li key={item} className="rounded-2xl bg-white/60 px-3 py-2 dark:bg-slate-950/40">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <p className="mt-3 text-sm text-slate-700 dark:text-slate-300">{artifact.quickSummary}</p>
 
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <BookOpenCheck className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Quick revision</p>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                      {artifact.quickRevisionNotes.map((item) => (
-                        <li key={item} className="rounded-2xl bg-white/60 px-3 py-2 dark:bg-slate-950/40">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                  <h4 className="mt-4 font-semibold">Important topics</h4>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300">
+                    {artifact.importantTopics.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <FileText className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Probable questions</p>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                      {artifact.probableQuestions.map((item) => (
-                        <li key={item} className="rounded-2xl bg-white/60 px-3 py-2 dark:bg-slate-950/40">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <h4 className="mt-4 font-semibold">Probable questions</h4>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300">
+                    {artifact.probableQuestions.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
 
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <Sparkles className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Fast revision mode</p>
-                    </div>
-                    <div className="mt-4 space-y-3">
-                      {artifact.fastRevisionMode.map((item, index) => (
-                        <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/60 px-3 py-3 text-sm leading-7 text-slate-600 dark:bg-slate-950/40 dark:text-slate-300">
-                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-xs font-semibold text-cyan-300">{index + 1}</span>
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                  <h4 className="mt-4 font-semibold">Quick revision</h4>
+                  <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{artifact.quickRevisionNotes.join(' • ')}</p>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <FileText className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Definitions</p>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                      {artifact.definitions.map((item) => (
-                        <li key={item} className="rounded-2xl bg-white/60 px-3 py-2 dark:bg-slate-950/40">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/60 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] dark:bg-white/5">
-                    <div className="flex items-center gap-3 text-cyan-300/90">
-                      <GraduationCap className="h-4 w-4" />
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em]">Formula sheet</p>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                      {artifact.formulas.map((item) => (
-                        <li key={item} className="rounded-2xl bg-white/60 px-3 py-2 dark:bg-slate-950/40">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <h4 className="mt-4 font-semibold">Formulas & Definitions</h4>
+                  <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{[...artifact.formulas, ...artifact.definitions].slice(0, 12).join(' • ')}</p>
                 </div>
               </motion.div>
             ) : (
-              <motion.div key="empty" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="mt-5 rounded-[1.5rem] border border-dashed border-white/15 bg-gradient-to-br from-white/40 to-white/20 p-6 dark:from-white/5 dark:to-white/0">
-                <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  Generate the exam bundle to see the important topics, probable questions, quick revision notes, formulas, and definitions appear here.
-                </p>
+              <motion.div key="empty" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="mt-5">
+                <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">Generate the exam bundle to see the important topics, probable questions, quick revision notes, formulas, and definitions appear here.</p>
               </motion.div>
             )}
           </AnimatePresence>
