@@ -69,14 +69,14 @@ export function ExamModeCard({
           </div>
 
           <div className="mt-5 grid gap-4">
-            <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
+            <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-white shadow-lg transition-transform duration-150 hover:-translate-y-1 bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-600 hover:to-sky-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 dark:from-cyan-600 dark:to-sky-600 dark:hover:from-cyan-500 dark:hover:to-sky-500">
               <input
                 type="file"
                 accept="application/pdf,text/plain"
                 className="hidden"
                 onChange={(event) => event.target.files?.[0] && onUploadFile(event.target.files[0])}
               />
-              <UploadCloud className="h-4 w-4" />
+              <UploadCloud className="h-4 w-4 text-white" />
               Upload PDF or text file
             </label>
 
@@ -151,6 +151,17 @@ export function ExamModeCard({
 
                   <p className="mt-3 text-sm text-slate-700 dark:text-slate-300">{artifact.quickSummary}</p>
 
+                  {artifact.lastMinuteTips && artifact.lastMinuteTips.length > 0 ? (
+                    <>
+                      <h4 className="mt-4 font-semibold text-cyan-600">Last-minute tips</h4>
+                      <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300">
+                        {artifact.lastMinuteTips.map((tip, i) => (
+                          <li key={i}>{tip}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+
                   <h4 className="mt-4 font-semibold">Important topics</h4>
                   <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-slate-700 dark:text-slate-300">
                     {artifact.importantTopics.map((item) => (
@@ -170,6 +181,13 @@ export function ExamModeCard({
 
                   <h4 className="mt-4 font-semibold">Formulas & Definitions</h4>
                   <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{[...artifact.formulas, ...artifact.definitions].slice(0, 12).join(' • ')}</p>
+
+                  {artifact.additionalNotes && artifact.additionalNotes.length > 0 ? (
+                    <>
+                      <h4 className="mt-4 font-semibold">Notes</h4>
+                      <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{artifact.additionalNotes.join(' • ')}</p>
+                    </>
+                  ) : null}
                 </div>
               </motion.div>
             ) : (

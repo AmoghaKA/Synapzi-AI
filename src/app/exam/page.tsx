@@ -40,7 +40,20 @@ export default function ExamPage() {
     setStatusMessage(`Analyzing ${label} for exam prep...`);
     try {
       const data = await getExamMode(cleanedText, language);
-      setArtifact(data.artifact);
+      // if backend did not provide lastMinuteTips, synthesize a short fallback
+      const artifactWithTips = { ...data.artifact } as typeof data.artifact & { lastMinuteTips?: string[] };
+      if ((!artifactWithTips.lastMinuteTips || artifactWithTips.lastMinuteTips.length === 0) && artifactWithTips.importantTopics?.length) {
+        const tips: string[] = [];
+        // use top important topics as quick tips
+        tips.push(...artifactWithTips.importantTopics.slice(0, 3).map((t) => `Focus on: ${t}`));
+        // add a couple of concise revision reminders if available
+        if (artifactWithTips.quickRevisionNotes?.length) {
+          tips.push(...artifactWithTips.quickRevisionNotes.slice(0, 2).map((n) => n.replace(/\.$/, "")));
+        }
+        artifactWithTips.lastMinuteTips = tips;
+      }
+
+      setArtifact(artifactWithTips);
       setStatusMessage(`Exam Mode ready from ${label}.`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Please try again.";

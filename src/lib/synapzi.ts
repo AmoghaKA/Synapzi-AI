@@ -35,6 +35,8 @@ export type ExamArtifact = {
   formulas: string[];
   definitions: string[];
   fastRevisionMode: string[];
+  lastMinuteTips?: string[];
+  additionalNotes?: string[];
 };
 
 export type UserProfile = {

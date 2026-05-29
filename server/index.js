@@ -556,7 +556,9 @@ Return ONLY valid JSON in this exact shape:
   "probableQuestions": ["question 1", "question 2"],
   "formulas": ["formula 1"],
   "definitions": ["definition 1"],
-  "fastRevisionMode": ["step 1", "step 2"]
+  "fastRevisionMode": ["step 1", "step 2"],
+  "lastMinuteTips": ["tip 1", "tip 2"],
+  "additionalNotes": ["note 1", "note 2"]
 }
 
 Use only the uploaded notes. Keep the output concise, practical, and exam-focused.
@@ -588,6 +590,8 @@ ${noteText.slice(0, 30000)}
         formulas: Array.isArray(parsed.formulas) ? parsed.formulas.map(String) : localArtifact.formulas,
         definitions: Array.isArray(parsed.definitions) ? parsed.definitions.map(String) : localArtifact.definitions,
         fastRevisionMode: Array.isArray(parsed.fastRevisionMode) ? parsed.fastRevisionMode.map(String) : localArtifact.fastRevisionMode,
+        lastMinuteTips: Array.isArray(parsed.lastMinuteTips) ? parsed.lastMinuteTips.map(String) : (localArtifact.fastRevisionMode ? localArtifact.fastRevisionMode.slice(0,3) : []),
+        additionalNotes: Array.isArray(parsed.additionalNotes) ? parsed.additionalNotes.map(String) : [],
       },
     });
   } catch (error) {
